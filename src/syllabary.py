@@ -10,15 +10,6 @@ fictional languages
 
 import pandas as pd
 import random as r
-from enum import Enum
-
-class PhonemeType(Enum):
-    STOP = ['p' , 'b' , 'k' , 'g' , 'd' , 't']
-    APPROX = ['l' , 'r' , 'w']
-
-class Phoneme:
-    def __init__(self):
-        self.type = PhonemeType.STOP
 
 class Syl:
     def __init__(self, onset, vowel, coda):

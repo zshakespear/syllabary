@@ -7,7 +7,7 @@ and parser
 
 @author: zacos
 """
-import tokens_v1 as tokens
+import tokens as t
 
 class Automaton():
     def __init__(self):
