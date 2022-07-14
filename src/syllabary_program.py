@@ -7,6 +7,19 @@ This is the syllabary program class used in parser.py
 @author: zacos
 """
 
+class Command():
+    def __init__(self):
+        self.head
+        self.num
+        
+class Rule():
+    def __init__(self):
+        self.head
+        self.body
+        
+    def add_out(self, new_out):
+        self.body.append(new_out)
+
 class SylProgram():
     def __init__(self):
         self.rules
