@@ -1,0 +1,5 @@
+# 30 June 2022
+Initialized the project
+
+# 1 July 2022
+Updated README w/ language details

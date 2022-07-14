@@ -1,0 +1,8 @@
+onset,vowel,coda
+t,a,b
+c,,ts
+ ,, 
+,,bs
+b,,t
+ts,,c
+,,cs

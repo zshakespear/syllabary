@@ -1,0 +1,12 @@
+Grammar rules for syllabary:
+
+sylProgram -> RULES COLON rules_list COMMANDS COLON commands_list
+rules_list -> rule rules_list | lambda
+commands_list -> command commands_list | lambda
+rule -> NONTERMINAL ARROW product product_list
+product -> TERMINAL | NONTERMINAL
+product_list -> COMMA product product_list | OR product product_list | lambda
+command -> NONTERMINAL TIMES NUMBER
+
+Tokens:
+RULES, COLON, COMMANDS, TERMINAL, NONTERMINAL, ARROW, OR, TIMES, NUMBER

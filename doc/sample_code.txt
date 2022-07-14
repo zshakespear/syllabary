@@ -1,0 +1,13 @@
+RULES:
+WORD -> SYL|SYL,SYL|SYL,SYL,SYL
+SYL -> ONSET,VOWELL,CODA
+ONSET -> SINGLE_CONS | STOP,APPROX | lambda
+STOP -> p | b | k | g | t | d
+APPROX -> f | v
+SINGLE_CONS -> STOP | APPROX 
+VOWEL -> a, e, i, o, u
+CODA -> SINGLE_CONS
+
+COMMANDS:
+WORD *5
+SYL *5
