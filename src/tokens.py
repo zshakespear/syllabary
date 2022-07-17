@@ -19,6 +19,7 @@ class tokenType(Enum):
     NUM = auto()
     NEW_LINE = auto()
     ARROW = auto()
+    UNDEFINED = auto()
     
 class token():
        
