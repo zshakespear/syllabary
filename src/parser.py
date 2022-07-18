@@ -57,15 +57,23 @@ class Parser():
         
     def rule(self):
         self.check()
-        print('you haven\'t defined rule yet')
+        self.match(t.tokenType.NONTERMINAL)
+        self.match(t.tokenType.ARROW)
+        self.product()
+        self.product_list()
         
     def command(self):
         self.check()
-        print('you havent defined command yet')
+        self.match(t.tokenType.NONTERMINAL)
+        self.match(t.tokenType.TIMES)
+        self.match(t.tokenType.NUM)
         
     def product(self):
         self.check()
-        print('you havent defined product yet')
+        if (self.tokens[0] == t.tokenType.TERMINAL):
+            self.match(t.tokenType.TERMINAL)
+        if (self.tokens[0] == t.tokenType.NONTERMINAL):
+            self.match(t.tokenType.NONTERMINAL)
         
     def product_list(self):
         self.check()
@@ -112,4 +120,3 @@ def MatchTest():
     else:
         print('Something\'s wrong')
         
-MatchTest()
