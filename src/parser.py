@@ -15,7 +15,7 @@ import program as p
 
 class Parser():
     def __init__(self, token_list):
-        self.program = p.program
+        self.program = p.SylProgram()
         self.tokens = token_list
         
     def run(self):
@@ -28,7 +28,7 @@ class Parser():
         
         
     def match(self, target_token):
-        if self.tokens[0] == target_token:
+        if self.tokens[0].type == target_token:
             output = self.tokens[0]
             self.tokens.pop(0)
             return output
@@ -53,3 +53,13 @@ class Parser():
     def product_list(self):
         print('you havent defined product yet')
         
+def MatchTest():
+    token_list = [t.token(t.tokenType.RULES,'RULES',0),
+                  t.token(t.tokenType.COLON,':',0),
+                  t.token(t.tokenType.COMMANDS,'COMMANDS',1),
+                  t.token(t.tokenType.COLON,':',1)]
+    p = Parser(token_list)
+    p.run()
+    for el in p.tokens:
+        print(el.type)
+    

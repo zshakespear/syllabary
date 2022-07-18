@@ -22,8 +22,8 @@ class Rule():
 
 class SylProgram():
     def __init__(self):
-        self.rules
-        self.commands
+        self.rules = []
+        self.commands = []
         
     def add_rule(self, rule):
         self.rules.append(rule)
