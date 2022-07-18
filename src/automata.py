@@ -30,6 +30,7 @@ class Automaton():
         self.read_chars = 0
         
     def run(self):
+        print('you didn\'t redefine run')
         self.s0()
         return self.curr_index, self.type, self.new_lines
         
@@ -44,37 +45,56 @@ class Automaton():
         
     def curr(self):
         return self.input_string[self.curr_index]
-    
+    #FIXME: Error state doesn't change the returned token type because it doesn't change the automaton token type. 
     def error(self):
         self.curr_index = 0;
         self.new_lines = 0;
         self.read_chars = 0;
-        return self.read_chars, t.tokenType.UNDEFINED, self.new_lines
+        self.type = t.tokenType.UNDEFINED
         
         
 class TerminalAutomaton(Automaton):
-    #FIXME: Automata accepts any number of characters, not characters broken up by a space
     
     def __init__(self):
         super().__init__()
         self.type = t.tokenType.TERMINAL
         
+    def run(self):
+        self.type = t.tokenType.TERMINAL
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+        
+        
     def s0(self):
         if self.curr().isalpha() == True and self.curr().islower() == True:
             self.it()
             self.s0()
+        else:
+            if self.curr().isspace() == True:
+                return
+            else:
+                self.error()
 
 class NonTerminalAutomaton(Automaton):
-    #FIXME: See TerminalAutomaton's FIXME
     
     def __init__(self):
         super().__init__()
         self.type = t.tokenType.NONTERMINAL
         
+    def run(self):
+        self.type = t.tokenType.NONTERMINAL
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+        
     def s0(self):
         if self.curr().isalpha() == True and self.curr().isupper() == True:
             self.it()
             self.s0()
+        else:
+            if self.curr().isspace() == True:
+                return
+            else:
+                self.error()
             
 class OrAutomaton(Automaton):
     pass
@@ -101,8 +121,20 @@ def run_Auto(automaton):
     output = automaton.run()
     for el in output:
         print(el)
+    print('\n')
+        
+def Terminal_Auto_Test():
+    test_auto = TerminalAutomaton()
+    test_auto.set_input('some string')
+    run_Auto(test_auto)
+    test_auto.set_input('soME string')
+    run_Auto(test_auto)
+    test_auto.set_input('SOme string')
+    run_Auto(test_auto)
+    test_auto.set_input('s0Me string')
+    run_Auto(test_auto)
 
-def Auto_Test():
+def NonTerminal_Auto_Test():
     test_auto = NonTerminalAutomaton()
     test_auto.set_input('some string')
     run_Auto(test_auto)
@@ -114,4 +146,6 @@ def Auto_Test():
     run_Auto(test_auto)
     
         
-Auto_Test()
+def Test_Battery():
+    Terminal_Auto_Test()
+    NonTerminal_Auto_Test()
