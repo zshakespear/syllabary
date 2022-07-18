@@ -26,8 +26,14 @@ class Parser():
         self.match(t.tokenType.COLON)
         self.commands_list()
         
+        
     def match(self, target_token):
-        print('you haven\'t defined match yet')
+        if self.tokens[0] == target_token:
+            output = self.tokens[0]
+            self.tokens.pop(0)
+            return output
+        else:
+            raise Exception('token not found')
         
     def rules_list(self):
         print('you haven\'t defined rules_list yet')
