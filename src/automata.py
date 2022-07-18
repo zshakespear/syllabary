@@ -14,6 +14,8 @@ token it read. It will also return the number of new lines.
 """
 import tokens as t
 
+#TODO: Fix the error handling here. 
+
 class Automaton():
     
     def __init__(self):

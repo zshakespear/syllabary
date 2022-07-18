@@ -11,6 +11,8 @@ a list of tokens for the parser.
 import automata as a
 import tokens as t
 
+#TODO: fix error handling
+
 class Lexer():
     def __init__(self):
         self.automata = [a.ArrowAutomaton(),
