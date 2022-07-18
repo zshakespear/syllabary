@@ -139,6 +139,9 @@ class RulesAutomaton(Automaton):
             self.error()
             
     def s1(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
         if self.match('U'):
             self.it()
             self.s2()
@@ -146,6 +149,9 @@ class RulesAutomaton(Automaton):
             self.error()
             
     def s2(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
         if self.match('L'):
             self.it()
             self.s3()
@@ -153,6 +159,9 @@ class RulesAutomaton(Automaton):
             self.error()
             
     def s3(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
         if self.match('E'):
             self.it()
             self.s4()
@@ -160,6 +169,9 @@ class RulesAutomaton(Automaton):
             self.error()
             
     def s4(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
         if self.match('S'):
             self.it()
             return
@@ -307,6 +319,8 @@ def Rules_Auto_Test():
     test_auto.set_input('RULES')
     run_Auto(test_auto)
     test_auto.set_input('Rules')
+    run_Auto(test_auto)
+    test_auto.set_input('RU')
     run_Auto(test_auto)
         
 def Or_Auto_Test():
