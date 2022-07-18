@@ -196,7 +196,24 @@ class TimesAutomaton(Automaton):
             self.error()
 
 class NumAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.NUM
+        
+    def run(self):
+        self.type = t.tokenType.NUM
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.curr().isnumeric() == True:
+            self.it()
+            self.s0()
+        else:
+            if self.curr().isspace() == True:
+                return
+            else:
+                self.error()
 
 class ArrowAutomaton(Automaton):
     pass
@@ -210,8 +227,19 @@ def run_Auto(automaton):
         print(el)
     print('\n')
 
+def Num_Auto_Test():
+    test_auto = NumAutomaton()
+    test_auto.set_input('some string')
+    run_Auto(test_auto)
+    test_auto.set_input('123')
+    run_Auto(test_auto)
+    test_auto.set_input('12some string')
+    run_Auto(test_auto)
+
 def Times_Auto_Test():
     test_auto = TimesAutomaton()
+    test_auto.set_input('some string')
+    run_Auto(test_auto)
     test_auto.set_input('*')
     run_Auto(test_auto)
     test_auto.set_input('*some')
@@ -280,3 +308,6 @@ def Test_Battery():
     Rules_Auto_Test()
     Colon_Auto_Test()
     Times_Auto_Test()
+    Num_Auto_Test()
+    
+Num_Auto_Test()
