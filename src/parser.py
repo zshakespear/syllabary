@@ -36,10 +36,18 @@ class Parser():
             raise Exception('token not found')
         
     def rules_list(self):
-        print('you haven\'t defined rules_list yet')
+        if(self.tokens[0] == t.tokenType.NONTERMINAL):
+            self.rule()
+            self.rules_list()
+        else:
+            return
         
     def commands_list(self):
-        print('you haven\'t defined commands_list yet')
+        if(self.tokens[0] == t.tokenType.NONTERMINAL):
+            self.command()
+            self.commands_list()
+        else:
+            return
         
     def rule(self):
         print('you haven\'t defined rule yet')
@@ -51,7 +59,13 @@ class Parser():
         print('you havent defined product yet')
         
     def product_list(self):
-        print('you havent defined product yet')
+        if (self.tokens[0] == t.tokenType.TERMINAl 
+            or self.tokens[0] == t.tokenType.NONTERMINAL
+            or self.tokens[0] == t.tokenType.OR):
+            self.product()
+            self.product_list()
+        else:
+            return
         
 def MatchTest():
     token_list = [t.token(t.tokenType.RULES,'RULES',0),
