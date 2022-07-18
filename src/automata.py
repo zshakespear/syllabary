@@ -35,7 +35,7 @@ class Automaton():
         return self.curr_index, self.type, self.new_lines
         
     def s0(self):
-        print('yout didn\'t define s0')
+        print('you didn\'t define s0')
         
     def it(self):
         if (self.curr() == '\n'):
@@ -45,7 +45,10 @@ class Automaton():
         
     def curr(self):
         return self.input_string[self.curr_index]
-    #FIXME: Error state doesn't change the returned token type because it doesn't change the automaton token type. 
+    
+    def match(self, char):
+        return self.curr() == char
+
     def error(self):
         self.curr_index = 0;
         self.new_lines = 0;
@@ -97,10 +100,37 @@ class NonTerminalAutomaton(Automaton):
                 self.error()
             
 class OrAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.OR
+        
+    def run(self):
+        self.type = t.tokenType.OR
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match('|'):
+            self.it()
+            return
+        else:
+            self.error()
 
 class RulesAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.RULES
+        
+    def run(self):
+        self.type = t.tokenType.RULES
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match('RULES'):
+            return
+        else:
+            self.error()
 
 class ColonAutomaton(Automaton):
     pass
@@ -122,7 +152,27 @@ def run_Auto(automaton):
     for el in output:
         print(el)
     print('\n')
+    
+def Rules_Auto_Test():
+    test_auto = RulesAutomaton()
+    test_auto.set_input('rules')
+    run_Auto(test_auto)
+    test_auto.set_input('RULES')
+    run_Auto(test_auto)
+    test_auto.set_input('Rules')
+    run_Auto(test_auto)
         
+def Or_Auto_Test():
+    test_auto = OrAutomaton()
+    test_auto.set_input('some string')
+    run_Auto(test_auto)
+    test_auto.set_input('|')
+    run_Auto(test_auto)
+    test_auto.set_input('|some string')
+    run_Auto(test_auto)
+    test_auto.set_input('| some string')
+    run_Auto(test_auto)
+
 def Terminal_Auto_Test():
     test_auto = TerminalAutomaton()
     test_auto.set_input('some string')
@@ -149,3 +199,5 @@ def NonTerminal_Auto_Test():
 def Test_Battery():
     Terminal_Auto_Test()
     NonTerminal_Auto_Test()
+    Or_Auto_Test()
+    Rules_Auto_Test()
