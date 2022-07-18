@@ -162,7 +162,20 @@ class RulesAutomaton(Automaton):
             self.error()
 
 class ColonAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.COLON
+        
+    def run(self):
+        self.type = t.tokenType.COLON
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match(':'):
+            return
+        else:
+            self.error()
 
 class TimesAutomaton(Automaton):
     pass
@@ -173,11 +186,25 @@ class NumAutomaton(Automaton):
 class ArrowAutomaton(Automaton):
     pass
 
+class CommandsAutomaton(Automaton):
+    pass
+
 def run_Auto(automaton):
     output = automaton.run()
     for el in output:
         print(el)
     print('\n')
+
+def Colon_Auto_Test():
+    test_auto = ColonAutomaton()
+    test_auto.set_input('some string')
+    run_Auto(test_auto)
+    test_auto.set_input(':')
+    run_Auto(test_auto)
+    test_auto.set_input(':some')
+    run_Auto(test_auto)
+    test_auto.set_input(': some')
+    run_Auto(test_auto)
     
 def Rules_Auto_Test():
     test_auto = RulesAutomaton()
@@ -227,3 +254,4 @@ def Test_Battery():
     NonTerminal_Auto_Test()
     Or_Auto_Test()
     Rules_Auto_Test()
+    Colon_Auto_Test()
