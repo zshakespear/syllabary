@@ -223,7 +223,31 @@ class NumAutomaton(Automaton):
                 self.error()
 
 class ArrowAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.ARROW
+        
+    def run(self):
+        self.type = t.tokenType.ARROW
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match('-'):
+            self.it()
+            self.s1()
+        else:
+            self.error()
+            
+    def s1(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('>'):
+            self.it()
+            return
+        else:
+            self.error()
 
 class CommandsAutomaton(Automaton):
     pass
@@ -233,6 +257,17 @@ def run_Auto(automaton):
     for el in output:
         print(el)
     print('\n')
+    
+def Arrow_Auto_Test():
+    test_auto = ArrowAutomaton()
+    test_auto.set_input('->')
+    run_Auto(test_auto)
+    test_auto.set_input('-')
+    run_Auto(test_auto)
+    test_auto.set_input('>')
+    run_Auto(test_auto)
+    test_auto.set_input('-.>')
+    run_Auto(test_auto)
 
 def Num_Auto_Test():
     test_auto = NumAutomaton()
@@ -316,5 +351,5 @@ def Test_Battery():
     Colon_Auto_Test()
     Times_Auto_Test()
     Num_Auto_Test()
+    Arrow_Auto_Test()   
     
-Num_Auto_Test()
