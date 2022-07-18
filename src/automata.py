@@ -76,7 +76,7 @@ class TerminalAutomaton(Automaton):
             self.it()
             self.s0()
         else:
-            if self.curr().isspace() == True:
+            if self.curr().isspace() == True or self.match(':'):
                 return
             else:
                 self.error()
