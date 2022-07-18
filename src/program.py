@@ -42,6 +42,5 @@ class SylProgram():
         for el in self.rules:
             if comm == el.head:
                 found = True
-                return found
         
         return found
