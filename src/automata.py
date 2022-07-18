@@ -127,7 +127,36 @@ class RulesAutomaton(Automaton):
         return self.curr_index, self.type, self.new_lines
     
     def s0(self):
-        if self.match('RULES'):
+        if self.match('R'):
+            self.it()
+            self.s1()
+        else:
+            self.error()
+            
+    def s1(self):
+        if self.match('U'):
+            self.it()
+            self.s2()
+        else:
+            self.error()
+            
+    def s2(self):
+        if self.match('L'):
+            self.it()
+            self.s3()
+        else:
+            self.error()
+            
+    def s3(self):
+        if self.match('E'):
+            self.it()
+            self.s4()
+        else:
+            self.error()
+            
+    def s4(self):
+        if self.match('S'):
+            self.it()
             return
         else:
             self.error()
@@ -139,9 +168,6 @@ class TimesAutomaton(Automaton):
     pass
 
 class NumAutomaton(Automaton):
-    pass
-
-class NewLineAutomaton(Automaton):
     pass
 
 class ArrowAutomaton(Automaton):
