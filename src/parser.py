@@ -8,3 +8,42 @@ rules of syllabary are followed. It also initializes the syllabary program objec
 @author: zacos
 """
 
+import lexer as l
+import tokens as t
+import automata as a
+import program as p
+
+class Parser():
+    def __init__(self, token_list):
+        self.program = p.program
+        self.tokens = token_list
+        
+    def run(self):
+        self.match(t.tokenType.RULES)
+        self.match(t.tokenType.COLON)
+        self.rules_list()
+        self.match(t.tokenType.COMMANDS)
+        self.match(t.tokenType.COLON)
+        self.commands_list()
+        
+    def match(self, target_token):
+        print('you haven\'t defined match yet')
+        
+    def rules_list(self):
+        print('you haven\'t defined rules_list yet')
+        
+    def commands_list(self):
+        print('you haven\'t defined commands_list yet')
+        
+    def rule(self):
+        print('you haven\'t defined rule yet')
+        
+    def command(self):
+        print('you havent defined command yet')
+        
+    def product(self):
+        print('you havent defined product yet')
+        
+    def product_list(self):
+        print('you havent defined product yet')
+        

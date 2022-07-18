@@ -42,6 +42,5 @@ def LexerTest():
     string = 'some string with numbers: 123 * 456 |'
     test_lexer.run(string)
     for el in test_lexer.tokens:
-        print(el)
+        print(el.type)
         
-LexerTest()
