@@ -262,13 +262,105 @@ class ArrowAutomaton(Automaton):
             self.error()
 
 class CommandsAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.COMMANDS
+        
+    def run(self):
+        self.type = t.tokenType.COMMANDS
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match('C'):
+            self.it()
+            self.s1();
+        else:
+            self.error()
+            
+    def s1(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('O'):
+            self.it()
+            self.s2()
+        else:
+            self.error()
+            
+    def s2(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('M'):
+            self.it()
+            self.s3()
+        else:
+            self.error()
+            
+    def s3(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('M'):
+            self.it()
+            self.s4()
+        else:
+            self.error()
+            
+    def s4(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('A'):
+            self.it()
+            self.s5()
+        else:
+            self.error()
+            
+    def s5(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('N'):
+            self.it()
+            self.s6()
+        else:
+            self.error()
+            
+    def s6(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('D'):
+            self.it()
+            self.s7()
+        else:
+            self.error()
+    
+    def s7(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        if self.match('S'):
+            self.it()
+        else:
+            self.error()
 
 def run_Auto(automaton):
     output = automaton.run()
     for el in output:
         print(el)
     print('\n')
+    
+def Commands_Auto_Test():
+    test_auto = CommandsAutomaton()
+    test_auto.set_input('COMMANDS')
+    run_Auto(test_auto)
+    test_auto.set_input('Commands')
+    run_Auto(test_auto)
+    test_auto.set_input('COMMA')
+    run_Auto(test_auto)
     
 def Arrow_Auto_Test():
     test_auto = ArrowAutomaton()
@@ -365,5 +457,6 @@ def Test_Battery():
     Colon_Auto_Test()
     Times_Auto_Test()
     Num_Auto_Test()
-    Arrow_Auto_Test()   
+    Arrow_Auto_Test()
+    Commands_Auto_Test()
     
