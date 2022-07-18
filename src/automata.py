@@ -70,6 +70,8 @@ class TerminalAutomaton(Automaton):
         
         
     def s0(self):
+        if self.curr_index == len(self.input_string):
+            return
         if self.curr().isalpha() == True and self.curr().islower() == True:
             self.it()
             self.s0()
@@ -91,6 +93,8 @@ class NonTerminalAutomaton(Automaton):
         return self.curr_index, self.type, self.new_lines
         
     def s0(self):
+        if self.curr_index == len(self.input_string):
+            return
         if self.curr().isalpha() == True and self.curr().isupper() == True:
             self.it()
             self.s0()
@@ -210,17 +214,13 @@ class NumAutomaton(Automaton):
         if self.curr_index == len(self.input_string):
             return
         if self.curr().isnumeric() == True:
-            if self.curr_index < len(self.input_string):
-                self.it()
-                self.s0()
+            self.it()
+            self.s0()
         else:
-            if self.curr_index == len(self.input_string):
+            if self.curr().isspace() == True:
                 return
             else:
-                if self.curr().isspace() == True:
-                    return
-                else:
-                    self.error()
+                self.error()
 
 class ArrowAutomaton(Automaton):
     pass
