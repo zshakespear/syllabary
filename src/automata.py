@@ -49,6 +49,7 @@ class Automaton():
     def match(self, char):
         return self.curr() == char
 
+
     def error(self):
         self.curr_index = 0;
         self.new_lines = 0;
@@ -206,14 +207,20 @@ class NumAutomaton(Automaton):
         return self.curr_index, self.type, self.new_lines
     
     def s0(self):
+        if self.curr_index == len(self.input_string):
+            return
         if self.curr().isnumeric() == True:
-            self.it()
-            self.s0()
+            if self.curr_index < len(self.input_string):
+                self.it()
+                self.s0()
         else:
-            if self.curr().isspace() == True:
+            if self.curr_index == len(self.input_string):
                 return
             else:
-                self.error()
+                if self.curr().isspace() == True:
+                    return
+                else:
+                    self.error()
 
 class ArrowAutomaton(Automaton):
     pass

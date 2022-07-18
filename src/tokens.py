@@ -17,7 +17,7 @@ class tokenType(Enum):
     OR = auto()
     TIMES = auto()
     NUM = auto()
-    NEW_LINE = auto()
+    COMMANDS = auto()
     ARROW = auto()
     UNDEFINED = auto()
     
