@@ -173,12 +173,27 @@ class ColonAutomaton(Automaton):
     
     def s0(self):
         if self.match(':'):
+            self.it()
             return
         else:
             self.error()
 
 class TimesAutomaton(Automaton):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.TIMES
+        
+    def run(self):
+        self.type = t.tokenType.TIMES
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    
+    def s0(self):
+        if self.match('*'):
+            self.it()
+            return
+        else:
+            self.error()
 
 class NumAutomaton(Automaton):
     pass
@@ -194,6 +209,15 @@ def run_Auto(automaton):
     for el in output:
         print(el)
     print('\n')
+
+def Times_Auto_Test():
+    test_auto = TimesAutomaton()
+    test_auto.set_input('*')
+    run_Auto(test_auto)
+    test_auto.set_input('*some')
+    run_Auto(test_auto)
+    test_auto.set_input('* some')
+    run_Auto(test_auto)
 
 def Colon_Auto_Test():
     test_auto = ColonAutomaton()
@@ -255,3 +279,4 @@ def Test_Battery():
     Or_Auto_Test()
     Rules_Auto_Test()
     Colon_Auto_Test()
+    Times_Auto_Test()
