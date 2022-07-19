@@ -12,6 +12,12 @@ class Command():
         self.head
         self.num
         
+    def get_command(self):
+        output = self.head.contents
+        output += ' * '
+        output += self.num.contents
+        return output
+        
 class Rule():
     def __init__(self):
         self.head
@@ -19,6 +25,13 @@ class Rule():
         
     def add_out(self, new_out):
         self.body.append(new_out)
+        
+    def get_rule(self):
+        output = self.head.contents
+        output += ' -> '
+        for el in self.body:
+            output += el.contents + ' | '
+        return output
 
 class SylProgram():
     def __init__(self):

@@ -17,7 +17,8 @@ class Parser():
     def __init__(self, token_list):
         self.program = p.SylProgram()
         self.tokens = token_list
-        
+    
+    #FIXME: rules_list takes a newRule object but it isn't given here! 
     def run(self):
         self.match(t.tokenType.RULES)
         self.match(t.tokenType.COLON)
@@ -40,11 +41,11 @@ class Parser():
         else:
             raise Exception(str(target_token)+'not found')
         
-    def rules_list(self):
+    def rules_list(self, newRule):
         self.check()
         if(self.tokens[0] == t.tokenType.NONTERMINAL):
-            self.rule()
-            self.rules_list()
+            newRule.append(self.rule())
+            self.rules_list(newRule)
         else:
             return
         
@@ -57,10 +58,11 @@ class Parser():
         
     def rule(self):
         self.check()
-        self.match(t.tokenType.NONTERMINAL)
+        new_rule = p.Rule()
+        new_rule.head = self.match(t.tokenType.NONTERMINAL)
         self.match(t.tokenType.ARROW)
-        self.product()
-        self.product_list()
+        new_rule.body.append(self.product())
+        self.product_list(new_rule)
         
     def command(self):
         self.check()
@@ -74,7 +76,7 @@ class Parser():
             self.match(t.tokenType.TERMINAL)
         if (self.tokens[0] == t.tokenType.NONTERMINAL):
             self.match(t.tokenType.NONTERMINAL)
-        
+    # FIXME: product_list up above takes a rule input and this doesn't receive it. 
     def product_list(self):
         self.check()
         if (self.tokens[0] == t.tokenType.TERMINAl 
@@ -120,3 +122,21 @@ def MatchTest():
     else:
         print('Something\'s wrong')
         
+def ProgramTest():
+    test_string = "RULES:\n\tSOME -> SOMETHING\nCOMMANDS:\n\tSOME * 5"
+    lexer = l.Lexer()
+    lexer.run(test_string)
+    token_list = lexer.tokens
+    p = Parser(token_list)
+    try:
+        p.run()
+    except Exception as inst:
+            print('Test 1 Failed: ')
+            print(inst)
+    else:
+         for el in p.program.rules:
+             print(el.get_rule())
+         for el in p.program.commands:
+             print(el.get_command())
+             
+ProgramTest()
