@@ -57,8 +57,27 @@ class Automaton():
         self.new_lines = 0;
         self.read_chars = 0;
         self.type = t.tokenType.UNDEFINED
+      
+class CommaAutomaton(Automaton):
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.COMMA
         
-        
+    def run(self):
+        self.type = t.tokenType.COMMA
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    def s0(self):
+        if self.curr_index == len(self.input_string):
+            return
+        else:
+            if self.match(","):
+                self.it()
+                return
+            else:
+                self.error()
+
+ #FIXME: Terminals require spaces after them and don't do well with | characters       
 class TerminalAutomaton(Automaton):
     
     def __init__(self):
@@ -78,7 +97,7 @@ class TerminalAutomaton(Automaton):
             self.it()
             self.s0()
         else:
-            if self.curr().isspace() == True or self.match(':'):
+            if self.curr().isspace() == True or self.match(':') or self.match(","):
                 return
             else:
                 self.error()
@@ -101,7 +120,7 @@ class NonTerminalAutomaton(Automaton):
             self.it()
             self.s0()
         else:
-            if self.curr().isspace() == True:
+            if self.curr().isspace() == True or self.match(","):
                 return
             else:
                 self.error()

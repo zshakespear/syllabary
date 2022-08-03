@@ -10,7 +10,6 @@ rules of syllabary are followed. It also initializes the syllabary program objec
 
 import lexer as l
 import tokens as t
-import automata as a
 import program as p
 
 class Parser():
@@ -18,7 +17,6 @@ class Parser():
         self.program = p.SylProgram()
         self.tokens = token_list
     
-    #FIXME: rules_list takes a newRule object but it isn't given here! 
     def run(self):
         self.match(t.tokenType.RULES)
         self.match(t.tokenType.COLON)
@@ -39,21 +37,25 @@ class Parser():
             self.tokens.pop(0)
             return output
         else:
-            raise Exception(str(target_token)+'not found')
+            raise Exception(str(target_token)+' not found')
         
-    def rules_list(self, newRule):
+    def rules_list(self):
         self.check()
-        if(self.tokens[0] == t.tokenType.NONTERMINAL):
-            newRule.append(self.rule())
-            self.rules_list(newRule)
+        if(self.tokens[0].type == t.tokenType.NONTERMINAL):
+            self.rule()
+            self.rules_list()
         else:
             return
         
     def commands_list(self):
-        if(self.tokens[0] == t.tokenType.NONTERMINAL):
-            self.command()
-            self.commands_list()
-        else:
+        try:
+            self.check()
+            if(self.tokens[0].type == t.tokenType.NONTERMINAL):
+                self.command()
+                self.commands_list()
+            else:
+                return
+        except Exception:
             return
         
     def rule(self):
@@ -61,29 +63,38 @@ class Parser():
         new_rule = p.Rule()
         new_rule.head = self.match(t.tokenType.NONTERMINAL)
         self.match(t.tokenType.ARROW)
-        new_rule.body.append(self.product())
+        new_rule.add_out(self.product())
         self.product_list(new_rule)
+        self.match(t.tokenType.COMMA)
+        self.program.add_rule(new_rule)
         
     def command(self):
         self.check()
-        self.match(t.tokenType.NONTERMINAL)
+        new_command = p.Command()
+        new_command.head = self.match(t.tokenType.NONTERMINAL)
         self.match(t.tokenType.TIMES)
-        self.match(t.tokenType.NUM)
+        new_command.num = self.match(t.tokenType.NUM)
+        self.program.add_command(new_command)
         
     def product(self):
         self.check()
-        if (self.tokens[0] == t.tokenType.TERMINAL):
-            self.match(t.tokenType.TERMINAL)
-        if (self.tokens[0] == t.tokenType.NONTERMINAL):
-            self.match(t.tokenType.NONTERMINAL)
-    # FIXME: product_list up above takes a rule input and this doesn't receive it. 
-    def product_list(self):
+        if (self.tokens[0].type == t.tokenType.TERMINAL):
+            return self.match(t.tokenType.TERMINAL)
+        if (self.tokens[0].type == t.tokenType.NONTERMINAL):
+            return self.match(t.tokenType.NONTERMINAL)
+        if self.tokens[0].type == t.tokenType.OR:
+            return self.match(t.tokenType.OR)
+        raise Exception("Expected Terminal or Nonterminal, found: "+str(self.tokens[0].type))
+     
+    #FIXME: product_list currently adds OR to the product list. 
+    #FIXME: product_list currently runs across lines. So we need to add a character to terminate a rule. Should we add a new character or should we reuse a character we already have?
+    def product_list(self, rule):
         self.check()
-        if (self.tokens[0] == t.tokenType.TERMINAl 
-            or self.tokens[0] == t.tokenType.NONTERMINAL
-            or self.tokens[0] == t.tokenType.OR):
-            self.product()
-            self.product_list()
+        if (self.tokens[0].type == t.tokenType.TERMINAL 
+            or self.tokens[0].type == t.tokenType.NONTERMINAL
+            or self.tokens[0].type == t.tokenType.OR):
+            rule.add_out(self.product())
+            self.product_list(rule)
         else:
             return
         
@@ -123,20 +134,20 @@ def MatchTest():
         print('Something\'s wrong')
         
 def ProgramTest():
-    test_string = "RULES:\n\tSOME -> SOMETHING\nCOMMANDS:\n\tSOME * 5"
+    test_string = "RULES:\n\tSOME -> SOMETHING,\n\t SOMETHING -> l | j | k,\nCOMMANDS:\n\tSOME * 5"
     lexer = l.Lexer()
     lexer.run(test_string)
     token_list = lexer.tokens
-    p = Parser(token_list)
+    par = Parser(token_list)
     try:
-        p.run()
+        par.run()
     except Exception as inst:
             print('Test 1 Failed: ')
             print(inst)
     else:
-         for el in p.program.rules:
+         for el in par.program.rules:
              print(el.get_rule())
-         for el in p.program.commands:
+         for el in par.program.commands:
              print(el.get_command())
              
 ProgramTest()

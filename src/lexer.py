@@ -17,6 +17,7 @@ class Lexer():
     def __init__(self):
         self.automata = [a.ArrowAutomaton(),
                          a.ColonAutomaton(),
+                         a.CommaAutomaton(),
                          a.CommandsAutomaton(),
                          a.NonTerminalAutomaton(),
                          a.NumAutomaton(),
@@ -41,7 +42,7 @@ class Lexer():
                 
 def LexerTest():
     test_lexer = Lexer()
-    string = 'some string with numbers: 123 * 456 |'
+    string = 'some string with numbers: 123 * 456 | NON,'
     test_lexer.run(string)
     for el in test_lexer.tokens:
         print(el.type)

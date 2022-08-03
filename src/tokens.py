@@ -20,6 +20,7 @@ class tokenType(Enum):
     COMMANDS = auto()
     ARROW = auto()
     UNDEFINED = auto()
+    COMMA = auto()
     
 class token():
        
