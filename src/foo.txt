@@ -1,0 +1,12 @@
+RULES:
+WORD -> SYL | SYL SYL | SYL SYL SYL,
+SYL -> ONSETVOWEL CODA,
+ONSETVOWEL -> ONSET VOWEL | OONSET OVOWEL,
+VOWEL -> a | e | i | o | u,
+ONSET -> k | t | lambda,
+CODA -> k | t | lambda,
+OONSET -> s | lambda,
+OVOWEL -> e | i,
+
+COMMANDS:
+WORD * 20
