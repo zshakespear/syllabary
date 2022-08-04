@@ -19,12 +19,13 @@ class Lexer():
                          a.ColonAutomaton(),
                          a.CommaAutomaton(),
                          a.CommandsAutomaton(),
-                         a.NonTerminalAutomaton(),
+                         a.LambdaAutomaton(),
                          a.NumAutomaton(),
                          a.OrAutomaton(),
                          a.RulesAutomaton(),
                          a.TerminalAutomaton(),
-                         a.TimesAutomaton()]
+                         a.TimesAutomaton(),
+                         a.NonTerminalAutomaton()]
         self.tokens = []
         
     def run(self, input_string):
@@ -42,7 +43,7 @@ class Lexer():
                 
 def LexerTest():
     test_lexer = Lexer()
-    string = 'some string with numbers: 123 * 456 | NON,'
+    string = 'some string with numbers: 123 * 456 | NON, RULES COMMANDS'
     test_lexer.run(string)
     for el in test_lexer.tokens:
         print(el.type)

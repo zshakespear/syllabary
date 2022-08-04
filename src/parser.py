@@ -84,15 +84,20 @@ class Parser():
             return self.match(t.tokenType.NONTERMINAL)
         if self.tokens[0].type == t.tokenType.OR:
             return self.match(t.tokenType.OR)
+        if self.tokens[0].type == t.tokenType.LAMBDA:
+            return self.match(t.tokenType.LAMBDA)
         raise Exception("Expected Terminal or Nonterminal, found: "+str(self.tokens[0].type))
      
-    #FIXME: product_list currently adds OR to the product list. 
-    #FIXME: product_list currently runs across lines. So we need to add a character to terminate a rule. Should we add a new character or should we reuse a character we already have?
     def product_list(self, rule):
         self.check()
         if (self.tokens[0].type == t.tokenType.TERMINAL 
-            or self.tokens[0].type == t.tokenType.NONTERMINAL
-            or self.tokens[0].type == t.tokenType.OR):
+            or self.tokens[0].type == t.tokenType.NONTERMINAL 
+            or self.tokens[0].type == t.tokenType.LAMBDA):
+            rule.add_out(self.product())
+            self.product_list(rule)
+        if (self.tokens[0].type == t.tokenType.OR):
+            rule.add_opt()
+            self.match(t.tokenType.OR)
             rule.add_out(self.product())
             self.product_list(rule)
         else:
@@ -134,7 +139,7 @@ def MatchTest():
         print('Something\'s wrong')
         
 def ProgramTest():
-    test_string = "RULES:\n\tSOME -> SOMETHING,\n\t SOMETHING -> l | j | k,\nCOMMANDS:\n\tSOME * 5"
+    test_string = "RULES:\n\tSOME -> SOMETHING SOMETHING SOMETHING,\n\t SOMETHING -> l | j | k,\nCOMMANDS:\n\tSOME * 5"
     lexer = l.Lexer()
     lexer.run(test_string)
     token_list = lexer.tokens
@@ -149,5 +154,3 @@ def ProgramTest():
              print(el.get_rule())
          for el in par.program.commands:
              print(el.get_command())
-             
-ProgramTest()

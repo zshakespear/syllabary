@@ -21,6 +21,7 @@ class tokenType(Enum):
     ARROW = auto()
     UNDEFINED = auto()
     COMMA = auto()
+    LAMBDA = auto()
     
 class token():
        

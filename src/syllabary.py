@@ -11,16 +11,38 @@ and then run the syllabary program constructed by the parser
 """
 import lexer as l
 import parser as p
+from program import stack_to_string as sts
 
 
 def main(input_path, output_path):
-    print('you haven\'t defined main yet!')
+    f = open(input_path,'r')
+    in_string = f.read()
+    f.close()
+    lex = l.Lexer()
+    lex.run(in_string)
+    token_list = lex.tokens
+    par = p.Parser(token_list)
+    par.run()
+    par.program.exe(output_path)
     
-def exe_test():
-    test_string = "RULES:\n\tSOME -> SOMETHING\n\tSOMETHING -> l | j | k\nCOMMANDS:\n\tSOME * 5"
+def exe_test(output_path):
+    test_string = "RULES:\n\tSOME -> SOMETHING SOMETHING,\n\tSOMETHING -> l | j | k,\nCOMMANDS:\n\tSOME * 5"
     lexer = l.Lexer()
     lexer.run(test_string)
     token_list = lexer.tokens
     parse = p.Parser(token_list)
     parse.run()
-    parse.program.exe()
+    parse.program.exe(output_path)
+    
+def match_test(output_path):
+    test_string = 'RULES:\n\tSOME -> SOMETHING SOMETHING lambda, \n\tSOMETHING -> l | j | k,\nCOMMANDS:\n\tSOME * 5'
+    lexer = l.Lexer()
+    lexer.run(test_string)
+    token_list = lexer.tokens
+    par = p.Parser(token_list)
+    par.run()
+    outlist = []
+    comm = par.program.commands[0].head
+    par.program.replace(comm,outlist)
+    print(sts(outlist))
+    return

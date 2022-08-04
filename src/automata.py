@@ -57,7 +57,82 @@ class Automaton():
         self.new_lines = 0;
         self.read_chars = 0;
         self.type = t.tokenType.UNDEFINED
-      
+  
+class LambdaAutomaton(Automaton):
+    def __init__(self):
+        super().__init__()
+        self.type = t.tokenType.LAMBDA
+        
+    def run(self):
+        self.type = t.tokenType.LAMBDA
+        self.s0()
+        return self.curr_index, self.type, self.new_lines
+    def s0(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("l"):
+                self.it()
+                self.s1()
+            else:
+                self.error()
+                
+    def s1(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("a"):
+                self.it()
+                self.s2()
+            else:
+                self.error()
+                
+    def s2(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("m"):
+                self.it()
+                self.s3()
+            else:
+                self.error()
+                
+    def s3(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("b"):
+                self.it()
+                self.s4()
+            else:
+                self.error()
+                
+    def s4(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("d"):
+                self.it()
+                self.s5()
+            else:
+                self.error()
+                
+    def s5(self):
+        if self.curr_index == len(self.input_string):
+            self.error()
+            return
+        else:
+            if self.match("a"):
+                self.it()
+                return
+            else:
+                self.error()
+    
 class CommaAutomaton(Automaton):
     def __init__(self):
         super().__init__()
@@ -97,7 +172,7 @@ class TerminalAutomaton(Automaton):
             self.it()
             self.s0()
         else:
-            if self.curr().isspace() == True or self.match(':') or self.match(","):
+            if self.curr().isspace() == True or self.match(':') or self.match(",") or self.match("|"):
                 return
             else:
                 self.error()
